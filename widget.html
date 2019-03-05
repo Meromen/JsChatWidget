@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
+        
+    <body>
+        <div id="app">
+            <!------ Include the above in your HEAD tag ---------->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 offset-8 fixed-bottom">
+                        <div class="card" style="width: 100%">
+                            <div class="card-header bg-primary text-white" data-toggle="collapse" data-target=".govno" @click="collapse = !collapse">
+                                <span class="glyphicon glyphicon-comment"></span>
+                                <strong>Helper bot</strong>
+                                <div class="btn-group float-right">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="collapse govno">    
+                                <div id="scroller" class="multi-collapse card-body">
+                                    <ul class="chat">
+
+                                        <li v-for="message in messages" class="clearfix" v-bind:class="{ left: !message.senderClient, right: message.senderClient }">
+                                            <span class="chat-img" v-bind:class="{ 'float-left': !message.senderClient, 'float-right': message.senderClient }" >
+                                                <img v-if="message.senderClient" src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="rounded-circle" />
+                                                <img v-else src="http://placehold.it/50/55C1E7/fff&text=GX" alt="User Avatar" class="rounded-circle" />
+                                            </span>
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <small v-if="message.senderClient" class="text-muted">
+                                                        <span class="glyphicon glyphicon-time"></span>{{ message.time }}
+                                                    </small>
+                                                    <strong v-bind:class="{ 'float-right': message.senderClient }"class="primary-font">{{ message.name }}</strong>
+                                                    <small v-if="!message.senderClient" class="float-right text-muted">
+                                                        <span class="glyphicon glyphicon-time"></span>{{ message.time }}
+                                                    </small>
+                                                </div>
+                                                <p>
+                                                {{ message.text }}
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="multi-collapse card-footer">
+                                    <div class="input-group">
+                                        <input id="btn-input" type="text" autocomplete="off" v-model="message" class="form-control input-sm" placeholder="Type your message here..." />
+                                        <span class="input-group-btn">
+                                            <button @click="sendMessage" :disabled="message.length === 0" class="btn btn-warning" id="btn-chat">
+                                                Send</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        
+
+    </body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <style>
+            .chat
+            {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .chat li
+            {
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px dotted #B3A9A9;
+            }
+
+            .chat li.left .chat-body
+            {
+                margin-left: 60px;
+            }
+
+            .chat li.right .chat-body
+            {
+                margin-right: 60px;
+            }
+
+
+            .chat li .chat-body p
+            {
+                margin: 0;
+                color: #777777;
+            }
+
+            .card .slidedown .glyphicon, .chat .glyphicon
+            {
+                margin-right: 5px;
+            }
+
+            .card-body
+            {
+                overflow-y: scroll;
+                height: 250px;
+            }
+
+            ::-webkit-scrollbar-track
+            {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                background-color: #F5F5F5;
+            }
+
+            ::-webkit-scrollbar
+            {
+                width: 12px;
+                background-color: #F5F5F5;
+            }
+
+            ::-webkit-scrollbar-thumb
+            {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+                background-color: #555;
+            }
+        </style>
+    </head>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        class Message {
+            constructor(message, senderClient, name) {  
+                const d = new Date();
+                let h = d.getHours().toString();
+                let m = d.getMinutes().toString();
+                if (m.length < 2) 
+                    m = `0${m}`;
+                this.name = name;
+                this.text = message;
+                this.senderClient = senderClient;
+                this.time = `${h}:${m}`
+            }
+        }
+
+        let app = new Vue({
+            el: "#app",
+            data: {
+                messages: [
+                    new Message("If you have any questions, you can write me and i will help you", false, "Gexar" )
+                ],
+                message: "",
+                collapse: false,
+                req: new XMLHttpRequest()
+                
+            }, 
+            methods: {
+                sendMessage: function() {
+                    this.messages.push(new Message(this.message, true, "You"));
+                    //TODO req to server   
+                    let vueObj = this;
+
+                    axios.post('https://gexarbot.herokuapp.com/api/widget/message', {'message' : vueObj.message})
+                        .then(function(res) {
+                            vueObj.messages.push(new Message(res.data, false, "Gexar"));
+                        })
+                        .catch(function(err) {
+                            console.log(err)
+                        })
+                    this.message = ""
+                }                                     
+            },
+            updated() {
+                if (this.collapse)
+                    $("#scroller")[0].scrollTo(0, 99999)
+            }
+        })
+    </script>
+</html>
