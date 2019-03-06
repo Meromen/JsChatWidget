@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="multi-collapse card-footer">
                                     <div class="input-group">
-                                        <input id="btn-input" type="text" autocomplete="off" v-model="message" class="form-control input-sm" placeholder="Type your message here..." />
+                                        <input id="btn-input" type="text" v-on:keyup.enter="sendMessage" autocomplete="off" v-model="message" class="form-control input-sm" placeholder="Type your message here..." />
                                         <span class="input-group-btn">
                                             <button @click="sendMessage" :disabled="message.length === 0" class="btn btn-warning" id="btn-chat">
                                                 Send</button>
@@ -151,6 +151,8 @@
             }
         }
 
+        
+
         let app = new Vue({
             el: "#app",
             data: {
@@ -164,18 +166,20 @@
             }, 
             methods: {
                 sendMessage: function() {
-                    this.messages.push(new Message(this.message, true, "You"));
-                    //TODO req to server   
-                    let vueObj = this;
+                    if (this.message.length > 0) {
+                        this.messages.push(new Message(this.message, true, "You"));
+                        //TODO req to server   
+                        let vueObj = this;
 
-                    axios.post('https://gexarbot.herokuapp.com/api/widget/message', {'message' : vueObj.message})
-                        .then(function(res) {
-                            vueObj.messages.push(new Message(res.data, false, "Gexar"));
-                        })
-                        .catch(function(err) {
-                            console.log(err)
-                        })
-                    this.message = ""
+                        axios.post('https://gexarbot.herokuapp.com/api/widget/message', {'message' : vueObj.message})
+                            .then(function(res) {
+                                vueObj.messages.push(new Message(res.data, false, "Gexar"));
+                            })
+                            .catch(function(err) {
+                                console.log(err)
+                            })
+                        this.message = ""
+                    }
                 }                                     
             },
             updated() {
